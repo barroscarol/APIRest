@@ -32,6 +32,7 @@ public class Cliente implements Serializable {
 
 	public Cliente(Integer id, String nomeCompleto, String sexo, Date dataDeNascimento, int idade,
 			String cidadeOndeReside) {
+		
 		this.id = id;
 		this.nomeCompleto = nomeCompleto;
 		this.sexo = sexo;

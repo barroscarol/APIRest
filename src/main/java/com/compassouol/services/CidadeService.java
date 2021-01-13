@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.compassouol.domain.Cidade;
+import com.compassouol.dto.CidadeDTO;
 import com.compassouol.repositories.CidadeRepository;
 import com.compassouol.services.exception.DataIntegrityException;
 
@@ -33,6 +34,19 @@ public class CidadeService {
 		return repo.save(obj);
 	}
 
+	public Page<Cidade> search(String searchTerm, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
+
+		return repo.search(searchTerm.toLowerCase(), pageRequest);
+	}
+
+	public Page<Cidade> findAll() {
+		int page = 0;
+		int size = 5;
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
+		return new PageImpl<>(repo.findAll(), pageRequest, size);
+	}
+
 	public void delete(Integer id) {
 		find(id);
 		try {
@@ -42,69 +56,20 @@ public class CidadeService {
 		}
 	}
 
-	public Page<Cidade> search(String searchTerm, int page, int size) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
+	public Page<Cidade> pesquisa(String pesquisarEstado, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
 
-		return repo.search(searchTerm.toLowerCase(), pageRequest);
+		return repo.pesquisa(pesquisarEstado.toLowerCase(), pageRequest);
 	}
 
-	public Page<Cidade> findAll() {
+	public Page<Cidade> findAlle() {
 		int page = 0;
 		int size = 10;
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
 		return new PageImpl<>(repo.findAll(), pageRequest, size);
 	}
 
-
-
-	public Cidade update(Cidade obj) {
-
-		/* Save serve para Inserir/Atualizar */
-
-		Cidade newObj = find(obj.getId());
-		updateData(newObj, obj);
-
-		return repo.save(newObj);
+	public Cidade fromDTO(CidadeDTO objDTO) {
+		return new Cidade(objDTO.getId(), objDTO.getNome(), objDTO.getEstado());
 	}
-
-	// public Cidade fromDTO(CidadeDTO objDTO) {
-
-	// return new Cidade(objDTO.getId(),null,null, null, 0, null);
-	// }
-
-	private void updateData(Cidade newObj, Cidade obj) {
-		// newObj.setNome(obj.getNomeCompleto());
-		// newObj.setEmail(obj.getEmail());
-
-	}
-	
-	 public Page<Cidade> pesquisa(
-	            String pesquisarEstado,
-	            int page,
-	            int size) {
-	        PageRequest pageRequest = PageRequest.of(
-	                page,
-	                size,
-	                Sort.Direction.ASC,
-	                "estado");
-
-	        return repo.pesquisa(
-	                pesquisarEstado.toLowerCase(),
-	                pageRequest);
-	    }
-
-	    public Page<Cidade> findAlle() {
-	        int page = 0;
-	        int size = 10;
-	        PageRequest pageRequest = PageRequest.of(
-	                page,
-	                size,
-	                Sort.Direction.ASC,
-	                "estado");
-	        return new PageImpl<>(
-	        		repo.findAll(), 
-	                pageRequest, size);
-	    }
-
-	}
- 
+}

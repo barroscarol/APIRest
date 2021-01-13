@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,6 +30,21 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 
+	@PostMapping
+	public ResponseEntity<Void> insert(@RequestBody Cliente obj) {
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@GetMapping("/search")
+	public Page<Cliente> search(@RequestParam("searchTerm") String searchTerm,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.search(searchTerm, page, size);
+
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cliente>> find(@PathVariable Integer id) {
 
@@ -43,24 +57,9 @@ public class ClienteResource {
 		return service.findAll();
 	}
 
-	@GetMapping("/search")
-	public Page<Cliente> search(@RequestParam("searchTerm") String searchTerm,
-			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.search(searchTerm, page, size);
-
-	}
-
-	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Cliente obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-
+	
 		Cliente obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -68,7 +67,6 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 
 	}
-
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

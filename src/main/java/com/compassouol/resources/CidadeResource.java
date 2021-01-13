@@ -3,6 +3,8 @@ package com.compassouol.resources;
 import java.net.URI;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compassouol.domain.Cidade;
+import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
 
 @RestController
@@ -25,6 +28,11 @@ public class CidadeResource {
 	@Autowired
 	private CidadeService service;
 
+	@GetMapping
+	public Page<Cidade> getAll() {
+		return service.findAll();
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
 
@@ -32,12 +40,6 @@ public class CidadeResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	
-	@GetMapping
-	public Page<Cidade> getAll() {
-		return service.findAll();
-	}
-	 
 	@GetMapping("/search")
 	public Page<Cidade> search(@RequestParam("searchTerm") String searchTerm,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -45,31 +47,23 @@ public class CidadeResource {
 		return service.search(searchTerm, page, size);
 
 	}
-	
+
 	@GetMapping("/pesquisa")
-    public Page<Cidade> pesquisa(
-            @RequestParam("pesquisarEstado") String pesquisarEstado,
-            @RequestParam(
-                    value = "page",
-                    required = false,
-                    defaultValue = "0") int page,
-            @RequestParam(
-                    value = "size",
-                    required = false,
-                    defaultValue = "10") int size) {
-        return service.pesquisa(pesquisarEstado, page, size);
+	public Page<Cidade> pesquisa(@RequestParam("pesquisarEstado") String pesquisarEstado,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.pesquisa(pesquisarEstado, page, size);
 
-    }
-
-	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Cidade obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
 	}
 
-	
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody CidadeDTO objDto) {
+		Cidade obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+
+	}
 
 }
- 
