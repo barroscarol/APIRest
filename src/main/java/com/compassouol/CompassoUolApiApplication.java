@@ -25,7 +25,7 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
 
-		Cliente cli1 = new Cliente(null, "Maria Carolina", sdf.parse("20/07/1993"), 27, "Paulista");
+		Cliente cli1 = new Cliente(null, "Maria Carolina","feminino", sdf.parse("20/07/1993"), 27, "Paulista");
 		clienteRepository.save(cli1);
 
 	}
