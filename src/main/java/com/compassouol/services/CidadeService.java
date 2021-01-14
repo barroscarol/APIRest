@@ -34,10 +34,10 @@ public class CidadeService {
 		return repo.save(obj);
 	}
 
-	public Page<Cidade> search(String searchTerm, int page, int size) {
+	public Page<Cidade> search(String searchName, int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
 
-		return repo.search(searchTerm.toLowerCase(), pageRequest);
+		return repo.search(searchName.toLowerCase(), pageRequest);
 	}
 
 	public Page<Cidade> findAll() {

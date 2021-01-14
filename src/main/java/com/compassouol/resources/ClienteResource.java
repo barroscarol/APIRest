@@ -1,7 +1,9 @@
 package com.compassouol.resources;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -30,21 +32,6 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 
-	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Cliente obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-
-	@GetMapping("/search")
-	public Page<Cliente> search(@RequestParam("searchTerm") String searchTerm,
-			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.search(searchTerm, page, size);
-
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cliente>> find(@PathVariable Integer id) {
 
@@ -53,13 +40,37 @@ public class ClienteResource {
 	}
 
 	@GetMapping
+	public ResponseEntity<List<ClienteDTO>> findAll() {
+
+		List<Cliente> list = service.findAll();
+		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+
+	@GetMapping("/page")
 	public Page<Cliente> getAll() {
-		return service.findAll();
+		return service.findAllPage();
+	}
+
+	@PostMapping
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@GetMapping("/search")
+	public Page<Cliente> search(@Valid @RequestParam("searchName") String searchName,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.search(searchName, page, size);
+
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-	
+
 		Cliente obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -67,6 +78,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 
 	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

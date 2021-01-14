@@ -30,13 +30,13 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
 
-		Cliente cli1 = new Cliente(null, "Maria Carolina","feminino", sdf.parse("20/07/1993"), 27, "Paulista");
+		Cliente cli1 = new Cliente(null, "Maria Carolina Barros","feminino", sdf.parse("20/07/1993"), 27, "Paulista");
 		clienteRepository.save(cli1);
 		
-		Cliente cli2 = new Cliente(null, "João Paulo","masculino", sdf.parse("20/07/1990"), 25, "Olinda");
+		Cliente cli2 = new Cliente(null, "José Barros","masculino", sdf.parse("13/01/1990"), 31, "Olinda");
 		clienteRepository.save(cli2);
 		
-		Cliente clie = new Cliente(null, "Maria ","feminino", sdf.parse("20/07/1991"), 27, "Paulista");
+		Cliente clie = new Cliente(null, "Maria ","feminino", sdf.parse("10/07/1993"), 27, "Natal");
 		clienteRepository.save(clie);
 		
 		Cidade cid1 = new Cidade(null, "Recife", "Pernambuco");
@@ -44,5 +44,8 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 		
 		Cidade cid2 = new Cidade(null, "São Paulo", "São Paulo");
 		cidadeRepository.save(cid2);
+		
+		Cidade cid3 = new Cidade(null, "Belo Horizonte", "Minas Gerais");
+		cidadeRepository.save(cid3);
 	}
 }

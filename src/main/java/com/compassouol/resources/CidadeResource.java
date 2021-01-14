@@ -25,6 +25,8 @@ import com.compassouol.services.CidadeService;
 @RequestMapping(value = "/cidades")
 public class CidadeResource {
 
+	
+
 	@Autowired
 	private CidadeService service;
 
@@ -41,10 +43,10 @@ public class CidadeResource {
 	}
 
 	@GetMapping("/search")
-	public Page<Cidade> search(@RequestParam("searchTerm") String searchTerm,
+	public Page<Cidade> search(@RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.search(searchTerm, page, size);
+		return service.search(searchName, page, size);
 
 	}
 

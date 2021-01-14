@@ -39,6 +39,16 @@ public class ClienteDTO implements Serializable {
 		cidadeOndeReside = obj.getCidadeOndeReside();
 	}
 
+	public ClienteDTO(Integer id, String nomeCompleto, String sexo, Date dataDeNascimento, int idade,
+			String cidadeOndeReside) {
+		this.id = id;
+		this.nomeCompleto = nomeCompleto;
+		this.sexo = sexo;
+		this.dataDeNascimento = dataDeNascimento;
+		this.idade = idade;
+		this.cidadeOndeReside = cidadeOndeReside;
+	}
+
 	public Integer getId() {
 		return id;
 	}

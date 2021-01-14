@@ -1,5 +1,6 @@
 package com.compassouol.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
@@ -29,13 +30,18 @@ public class ClienteService {
 				null));
 	}
 
-	public Page<Cliente> search(String searchTerm, int page, int size) {
+	public Page<Cliente> search(String searchName, int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nomeCompleto");
 
-		return repo.search(searchTerm.toLowerCase(), pageRequest);
+		return repo.search(searchName.toLowerCase(), pageRequest);
+	}
+	
+	public List<Cliente> findAll() {
+
+		return repo.findAll();
 	}
 
-	public Page<Cliente> findAll() {
+	public Page<Cliente> findAllPage() {
 		int page = 0;
 		int size = 10;
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nomeCompleto");
@@ -48,8 +54,7 @@ public class ClienteService {
 	}
 
 	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), objDto.getSexo(), objDto.getDataDeNascimento(),
-				objDto.getIdade(), objDto.getCidadeOndeReside());
+		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), objDto.getSexo(), objDto.getDataDeNascimento(),objDto.getIdade(), objDto.getCidadeOndeReside());
 	}
 
 	public Cliente update(Cliente obj) {
@@ -63,11 +68,7 @@ public class ClienteService {
 	private void updateData(Cliente newObj, Cliente obj) {
 
 		newObj.setNomeCompleto(obj.getNomeCompleto());
-		newObj.setSexo(obj.getSexo());
-		newObj.setIdade(obj.getIdade());
-		newObj.setDataDeNascimento(obj.getDataDeNascimento());
-		newObj.setCidadeOndeReside(obj.getCidadeOndeReside());
-
+	
 	}
 
 	public void delete(Integer id) {
