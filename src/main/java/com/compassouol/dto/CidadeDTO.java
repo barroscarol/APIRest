@@ -18,12 +18,12 @@ public class CidadeDTO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty(message="Preenchimento obrigatório - O nome da cidade deve ser Preenchido")
-	@Length(min=2,max =30,message = "O nome da cidade deve ter entre 2 e 30 caracteres")
+	@NotEmpty(message = "Para cadastro de uma nova cidade o nome da cidade deve ser Preenchido")
+	@Length(min = 2, max = 30, message = "O nome da cidade deve ter entre 2 e 30 caracteres")
 	private String nome;
 	
-	@NotEmpty(message="Preenchimento obrigatório - O nomo da estado deve ser Preenchido")
-	@Length(min=2,max =30,message = "O nome do estado deve ter entre 2 e 30 caracteres")
+	@NotEmpty(message = "Para cadastro de um novo estado o nome do estado deve ser Preenchido")
+	@Length(min = 2, max = 30, message = "O nome do estado deve ter entre 2 e 30 caracteres")
 	private String estado;
 
 	public CidadeDTO() {

@@ -5,12 +5,8 @@ import java.util.List;
 
 import com.compassouol.exceptions.StandardError;
 
-
 public class ValidationError extends StandardError {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private List<FieldMessage> errors = new ArrayList<>();

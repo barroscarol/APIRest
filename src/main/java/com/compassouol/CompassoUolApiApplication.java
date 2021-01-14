@@ -36,8 +36,11 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 		Cliente cli2 = new Cliente(null, "José Barros","masculino", sdf.parse("13/01/1990"), 31, "Olinda");
 		clienteRepository.save(cli2);
 		
-		Cliente clie = new Cliente(null, "Maria ","feminino", sdf.parse("10/07/1993"), 27, "Natal");
-		clienteRepository.save(clie);
+		Cliente cli3 = new Cliente(null, "Maria ","feminino", sdf.parse("10/07/1993"), 27, "Natal");
+		clienteRepository.save(cli3);
+		
+		Cliente cli4 = new Cliente(null, "João ","Masculino", sdf.parse("10/07/1992"), 28, "Rio de Janeiro");
+		clienteRepository.save(cli4);
 		
 		Cidade cid1 = new Cidade(null, "Recife", "Pernambuco");
 		cidadeRepository.save(cid1);
@@ -47,5 +50,8 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 		
 		Cidade cid3 = new Cidade(null, "Belo Horizonte", "Minas Gerais");
 		cidadeRepository.save(cid3);
+		
+		Cidade cid4 = new Cidade(null, "Salvador", "Bahia");
+		cidadeRepository.save(cid4);
 	}
 }

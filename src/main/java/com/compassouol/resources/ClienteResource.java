@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compassouol.domain.Cliente;
 import com.compassouol.dto.ClienteDTO;
+import com.compassouol.dto.ClienteNewDTO;
 import com.compassouol.services.ClienteService;
 
 @RestController
@@ -52,14 +53,6 @@ public class ClienteResource {
 		return service.findAllPage();
 	}
 
-	@PostMapping
-	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
-		Cliente obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-
 	@GetMapping("/search")
 	public Page<Cliente> search(@Valid @RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -68,10 +61,18 @@ public class ClienteResource {
 
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-
+	@PostMapping
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
 		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteNewDTO objDto, @PathVariable Integer id) {
+
+		Cliente obj = service.fromNewDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 

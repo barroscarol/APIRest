@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.compassouol.domain.Cliente;
 import com.compassouol.dto.ClienteDTO;
+import com.compassouol.dto.ClienteNewDTO;
 import com.compassouol.repositories.ClienteRepository;
 import com.compassouol.services.exception.DataIntegrityException;
 
@@ -56,9 +57,14 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteDTO objDto) {
 		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), objDto.getSexo(), objDto.getDataDeNascimento(),objDto.getIdade(), objDto.getCidadeOndeReside());
 	}
+	
+	public Cliente fromNewDTO(ClienteNewDTO objDto) {
+		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), null, null, 0, null);
+	}
 
 	public Cliente update(Cliente obj) {
 
+		
 		Cliente newObj = find(obj.getId());
 		updateData(newObj, obj);
 

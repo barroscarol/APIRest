@@ -20,10 +20,8 @@ public class Cliente implements Serializable {
 
 	private String nomeCompleto;
 	private String sexo;
-
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataDeNascimento;
-
 	private int idade;
 	private String cidadeOndeReside;
 
@@ -32,7 +30,7 @@ public class Cliente implements Serializable {
 
 	public Cliente(Integer id, String nomeCompleto, String sexo, Date dataDeNascimento, int idade,
 			String cidadeOndeReside) {
-		
+
 		this.id = id;
 		this.nomeCompleto = nomeCompleto;
 		this.sexo = sexo;

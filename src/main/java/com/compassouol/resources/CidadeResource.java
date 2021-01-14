@@ -22,12 +22,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.compassouol.domain.Cidade;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
+
 @RestController
 @RequestMapping(value = "/cidades")
 public class CidadeResource {
 
 	@Autowired
 	private CidadeService service;
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
+
+		Optional<Cidade> obj = Optional.ofNullable(service.find(id));
+		return ResponseEntity.ok().body(obj);
+	}
 
 	@GetMapping
 	public ResponseEntity<List<CidadeDTO>> findAll() {
@@ -42,27 +50,18 @@ public class CidadeResource {
 		return service.findAllPage();
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
-
-		Optional<Cidade> obj = Optional.ofNullable(service.find(id));
-		return ResponseEntity.ok().body(obj);
-	}
-
 	@GetMapping("/search")
 	public Page<Cidade> search(@RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		return service.search(searchName, page, size);
-
 	}
 
-	@GetMapping("/pesquisa") 
+	@GetMapping("/pesquisa")
 	public Page<Cidade> pesquisa(@RequestParam("pesquisarEstado") String pesquisarEstado,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		return service.pesquisa(pesquisarEstado, page, size);
-
 	}
 
 	@PostMapping

@@ -6,6 +6,10 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.compassouol.domain.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,13 +21,20 @@ public class ClienteDTO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@NotEmpty(message = "Preenchimento obrigatório : Para Cadastro de cliente o campo nome do cliente deve estar preenchido")
+	@Length(min = 2, max = 30, message = "O nome do cliente deve conter entre 2 e 30 caracteres")
 	private String nomeCompleto;
+
+	@NotEmpty(message = "Preenchimento obrigatório : Para Cadastro de cliente o campo sexo deve estar preenchido")
 	private String sexo;
 
+	@Past(message = "Preenchimento obrigatório: Para Cadastro de cliente o campo data de nascimento deve estar preenchido")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataDeNascimento;
 
 	private int idade;
+
+	@NotEmpty(message = "Preenchimento obrigatório:Para Cadastro de cliente  o campo cidade onde reside deve estar preenchido")
 	private String cidadeOndeReside;
 
 	public ClienteDTO() {
