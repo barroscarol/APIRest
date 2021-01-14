@@ -23,6 +23,8 @@ import com.compassouol.domain.Cidade;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/cidades")
 public class CidadeResource {
@@ -30,6 +32,7 @@ public class CidadeResource {
 	@Autowired
 	private CidadeService service;
 
+	@ApiOperation(value = "Buscar cidade por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
 
@@ -37,6 +40,7 @@ public class CidadeResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@ApiOperation(value = "Listar todas Cidades")
 	@GetMapping
 	public ResponseEntity<List<CidadeDTO>> findAll() {
 
@@ -45,11 +49,13 @@ public class CidadeResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@ApiOperation(value = "Lista paginada")
 	@GetMapping("/page")
 	public Page<Cidade> getAll() {
 		return service.findAllPage();
 	}
 
+	@ApiOperation(value = "Buscar cidade por nome")
 	@GetMapping("/search")
 	public Page<Cidade> search(@RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -57,6 +63,7 @@ public class CidadeResource {
 		return service.search(searchName, page, size);
 	}
 
+	@ApiOperation(value = "Buscar cidade por estado")
 	@GetMapping("/pesquisa")
 	public Page<Cidade> pesquisa(@RequestParam("pesquisarEstado") String pesquisarEstado,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -64,6 +71,7 @@ public class CidadeResource {
 		return service.pesquisa(pesquisarEstado, page, size);
 	}
 
+	@ApiOperation(value = "Inserir nova cidade")
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody CidadeDTO objDto) {
 		Cidade obj = service.fromDTO(objDto);

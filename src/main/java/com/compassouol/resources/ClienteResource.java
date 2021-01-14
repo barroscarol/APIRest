@@ -26,6 +26,8 @@ import com.compassouol.dto.ClienteDTO;
 import com.compassouol.dto.ClienteNewDTO;
 import com.compassouol.services.ClienteService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
@@ -33,6 +35,7 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 
+	@ApiOperation(value = "Buscar Cliente por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cliente>> find(@PathVariable Integer id) {
 
@@ -40,6 +43,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@ApiOperation(value = "Listar todos os clientes")
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 
@@ -48,11 +52,13 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@ApiOperation(value = "Lista paginada")
 	@GetMapping("/page")
 	public Page<Cliente> getAll() {
 		return service.findAllPage();
 	}
 
+	@ApiOperation(value = "Buscar clientes por nome")
 	@GetMapping("/search")
 	public Page<Cliente> search(@Valid @RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -61,6 +67,7 @@ public class ClienteResource {
 
 	}
 
+	@ApiOperation(value = "Inserir um novo cliente")
 	@PostMapping
 	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
 		Cliente obj = service.fromDTO(objDto);
@@ -69,6 +76,7 @@ public class ClienteResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@ApiOperation(value = "Alterar nome de cliente por id")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteNewDTO objDto, @PathVariable Integer id) {
 
@@ -77,9 +85,9 @@ public class ClienteResource {
 		obj = service.update(obj);
 
 		return ResponseEntity.noContent().build();
-
 	}
 
+	@ApiOperation(value = "Remover cliente")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
