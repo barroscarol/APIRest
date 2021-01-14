@@ -1,5 +1,6 @@
 package com.compassouol.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
@@ -39,8 +40,13 @@ public class CidadeService {
 
 		return repo.search(searchName.toLowerCase(), pageRequest);
 	}
+	
+	public List<Cidade> findAll() {
 
-	public Page<Cidade> findAll() {
+		return repo.findAll();
+	}
+
+	public Page<Cidade> findAllPage() {
 		int page = 0;
 		int size = 5;
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");

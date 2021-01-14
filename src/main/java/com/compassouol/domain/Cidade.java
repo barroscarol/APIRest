@@ -6,9 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Cidade implements Serializable {
@@ -18,12 +15,10 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty(message ="Preenchimento obrigatório - nome")
-	@Length(min=2,  max =30,message = "O nome deve ter entre 2 e 30 caracteres")
+	 
 	private String nome;
 
-	@NotEmpty(message="Preenchimento obrigatório - estado")
-	@Length(min=2,max =30,message = "O nome do estado deve ter entre 2 e 30 caracteres")
+	 
 	private String estado;
 
 	public Cidade() {

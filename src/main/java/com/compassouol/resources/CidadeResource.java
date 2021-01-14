@@ -1,7 +1,9 @@
 package com.compassouol.resources;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -20,19 +22,24 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.compassouol.domain.Cidade;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
-
 @RestController
 @RequestMapping(value = "/cidades")
 public class CidadeResource {
-
-	
 
 	@Autowired
 	private CidadeService service;
 
 	@GetMapping
+	public ResponseEntity<List<CidadeDTO>> findAll() {
+
+		List<Cidade> list = service.findAll();
+		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+
+	@GetMapping("/page")
 	public Page<Cidade> getAll() {
-		return service.findAll();
+		return service.findAllPage();
 	}
 
 	@GetMapping("/{id}")
@@ -50,7 +57,7 @@ public class CidadeResource {
 
 	}
 
-	@GetMapping("/pesquisa")
+	@GetMapping("/pesquisa") 
 	public Page<Cidade> pesquisa(@RequestParam("pesquisarEstado") String pesquisarEstado,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
