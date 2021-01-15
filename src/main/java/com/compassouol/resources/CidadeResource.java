@@ -9,7 +9,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compassouol.domain.Cidade;
-import com.compassouol.domain.Cliente;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
 
@@ -57,7 +55,7 @@ public class CidadeResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@ApiOperation(value = "Buscar cidade por nome")
+	@ApiOperation(value = "Buscar cidade por nome com Paginação")
 	@GetMapping("/search")
 	public Page<Cidade> search(@RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -65,7 +63,7 @@ public class CidadeResource {
 		return service.search(searchName, page, size);
 	}
 
-	@ApiOperation(value = "Buscar cidade por estado")
+	@ApiOperation(value = "Buscar cidade por estado com Paginação")
 	@GetMapping("/pesquisa")
 	public Page<Cidade> pesquisa(@RequestParam("searchName") String searchName,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -84,12 +82,16 @@ public class CidadeResource {
 
 	}
 
+	@ApiOperation(value = "Buscar cidade por nome")
 	@GetMapping(value = "/nome")
-	public ResponseEntity<Cidade> buscar(@RequestParam("searchName") @PathVariable String nome) {
-		Cidade obj = service.findByName(nome);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<List<CidadeDTO>> buscar(@RequestParam("searchName") @PathVariable String nome) {
+
+		List<CidadeDTO> cidadesDTO = service.findByName(nome);
+
+		return ResponseEntity.ok().body(cidadesDTO);
 	}
 
+	@ApiOperation(value = "Buscar cidade por estado")
 	@GetMapping(value = "/estado")
 	public ResponseEntity<List<CidadeDTO>> buscarEstado(@RequestParam("searchName") @PathVariable String estado) {
 
