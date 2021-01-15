@@ -1,7 +1,6 @@
 package com.compassouol.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,7 @@ public interface CidadeRepository extends JpaRepository<Cidade, Integer> {
 	@Query("FROM Cidade c " + "WHERE LOWER(c.estado) like %:searchName% ")
 	Page<Cidade> pesquisa(@Param("searchName") String searchName, Pageable pageable);
 
-	Optional<Cidade> findByNome(String nome);
+	List<Cidade> findByNome(String nome);
 
 	List<Cidade> findByEstado(String estado);
 }

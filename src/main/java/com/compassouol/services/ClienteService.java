@@ -1,5 +1,6 @@
 package com.compassouol.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +25,29 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 
-	public Cliente find(Integer id) {
-		Optional<Cliente> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"ID do cliente não foi encontrado na base de dados ! Id: " + id + ", Tipo: " + Cliente.class.getName(),
-				null));
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
+
+	public List<ClienteDTO> findByName(String nomeCompleto) {
+
+		List<Cliente> clientes = repo.findByNomeCompleto(nomeCompleto);
+		List<ClienteDTO> clientesDTO = new ArrayList<>();
+
+		for (Cliente cliente : clientes) {
+
+			ClienteDTO clienteDTO = new ClienteDTO(cliente);
+			clientesDTO.add(clienteDTO);
+
+		}
+		if (clientesDTO.isEmpty()) {
+
+			throw new ObjectNotFoundException("Cliente não encontrado na base de dados", nomeCompleto);
+
+		}
+
+		return clientesDTO;
 	}
 
 	public Page<Cliente> search(String searchName, int page, int size) {
@@ -36,7 +55,14 @@ public class ClienteService {
 
 		return repo.search(searchName.toLowerCase(), pageRequest);
 	}
-	
+
+	public Cliente find(Integer id) {
+		Optional<Cliente> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"ID do cliente não foi encontrado na base de dados ! Id: " + id + ", Tipo: " + Cliente.class.getName(),
+				null));
+	}
+
 	public List<Cliente> findAll() {
 
 		return repo.findAll();
@@ -49,32 +75,9 @@ public class ClienteService {
 		return new PageImpl<>(repo.findAll(), pageRequest, size);
 	}
 
-	public Cliente insert(Cliente obj) {
-		obj.setId(null);
-		return repo.save(obj);
-	}
-
 	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), objDto.getSexo(), objDto.getDataDeNascimento(),objDto.getIdade(), objDto.getCidadeOndeReside());
-	}
-	
-	public Cliente fromNewDTO(ClienteNewDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), null, null, 0, null);
-	}
-
-	public Cliente update(Cliente obj) {
-
-		
-		Cliente newObj = find(obj.getId());
-		updateData(newObj, obj);
-
-		return repo.save(newObj);
-	}
-
-	private void updateData(Cliente newObj, Cliente obj) {
-
-		newObj.setNomeCompleto(obj.getNomeCompleto());
-	
+		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), objDto.getSexo(), objDto.getDataDeNascimento(),
+				objDto.getIdade(), objDto.getCidadeOndeReside());
 	}
 
 	public void delete(Integer id) {
@@ -85,11 +88,23 @@ public class ClienteService {
 			throw new DataIntegrityException("Existem dados ainda vinculados ao cliente");
 		}
 	}
-	
-	public Cliente findByName(String nomeCompleto) {
-		
-	    Optional<Cliente> obj = repo.findByNomeCompleto(nomeCompleto); 
-	    return obj.orElseThrow(() -> new ObjectNotFoundException("O cliente não foi encontrado na base de dados: " + nomeCompleto, Cliente.class.getName()));
+
+	public Cliente update(Cliente obj) {
+
+		Cliente newObj = find(obj.getId());
+		updateData(newObj, obj);
+
+		return repo.save(newObj);
+	}
+
+	private void updateData(Cliente newObj, Cliente obj) {
+
+		newObj.setNomeCompleto(obj.getNomeCompleto());
+
+	}
+
+	public Cliente fromNewDTO(ClienteNewDTO objDto) {
+		return new Cliente(objDto.getId(), objDto.getNomeCompleto(), null, null, 0, null);
 	}
 
 }

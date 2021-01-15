@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,13 +15,18 @@ import org.springframework.stereotype.Service;
 import com.compassouol.domain.Cidade;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.repositories.CidadeRepository;
-import com.compassouol.services.exception.DataIntegrityException;
 
 @Service
 public class CidadeService {
+	
 
 	@Autowired
 	private CidadeRepository repo;
+
+	public Cidade insert(Cidade obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
 
 	public Cidade find(Integer id) {
 		Optional<Cidade> obj = repo.findById(id);
@@ -31,20 +35,16 @@ public class CidadeService {
 				null));
 	}
 
-	public Cidade insert(Cidade obj) {
-		obj.setId(null);
-		return repo.save(obj);
-	}
-
-	public Page<Cidade> search(String searchName, int page, int size) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
-
-		return repo.search(searchName.toLowerCase(), pageRequest);
-	}
-
 	public List<Cidade> findAll() {
 
 		return repo.findAll();
+	}
+
+	public Page<Cidade> findAllEstados() {
+		int page = 0;
+		int size = 10;
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
+		return new PageImpl<>(repo.findAll(), pageRequest, size);
 	}
 
 	public Page<Cidade> findAllPage() {
@@ -52,32 +52,6 @@ public class CidadeService {
 		int size = 5;
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
 		return new PageImpl<>(repo.findAll(), pageRequest, size);
-	}
-
-	public void delete(Integer id) {
-		find(id);
-		try {
-			repo.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Existem dados ainda vinculados ao cliente");
-		}
-	}
-
-	public Page<Cidade> pesquisa(String searchName, int page, int size) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
-
-		return repo.pesquisa(searchName.toLowerCase(), pageRequest);
-	}
-
-	public Page<Cidade> findAlle() {
-		int page = 0;
-		int size = 10;
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
-		return new PageImpl<>(repo.findAll(), pageRequest, size);
-	}
-
-	public Cidade fromDTO(CidadeDTO objDTO) {
-		return new Cidade(objDTO.getId(), objDTO.getNome(), objDTO.getEstado());
 	}
 
 	public List<CidadeDTO> findByName(String nome) {
@@ -100,6 +74,12 @@ public class CidadeService {
 		return cidadesDTO;
 	}
 
+	public Page<Cidade> search(String searchName, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "nome");
+
+		return repo.search(searchName.toLowerCase(), pageRequest);
+	}
+
 	public List<CidadeDTO> findByEstado(String estado) {
 
 		List<Cidade> cidades = repo.findByEstado(estado);
@@ -120,4 +100,15 @@ public class CidadeService {
 		return cidadesDTO;
 
 	}
+
+	public Page<Cidade> pesquisa(String searchName, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
+
+		return repo.pesquisa(searchName.toLowerCase(), pageRequest);
+	}
+
+	public Cidade fromDTO(CidadeDTO objDTO) {
+		return new Cidade(objDTO.getId(), objDTO.getNome(), objDTO.getEstado());
+	}
+
 }

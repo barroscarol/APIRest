@@ -35,6 +35,33 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 
+	@ApiOperation(value = "Inserir um novo cliente")
+	@PostMapping
+	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@ApiOperation(value = "Buscar clientes por nome completo")
+	@GetMapping(value = "/nome")
+	public ResponseEntity<List<ClienteDTO>> buscar(@RequestParam("searchName") @PathVariable String nomeCompleto) {
+
+		List<ClienteDTO> clientesDTO = service.findByName(nomeCompleto);
+
+		return ResponseEntity.ok().body(clientesDTO);
+	}
+
+	@ApiOperation(value = "Buscar clientes por nome com paginação")
+	@GetMapping("/search")
+	public Page<Cliente> search(@Valid @RequestParam("searchName") String searchName,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.search(searchName, page, size);
+
+	}
+
 	@ApiOperation(value = "Buscar Cliente por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cliente>> find(@PathVariable Integer id) {
@@ -58,28 +85,11 @@ public class ClienteResource {
 		return service.findAllPage();
 	}
 
-	@ApiOperation(value = "Buscar clientes por nome")
-	@GetMapping("/search")
-	public Page<Cliente> search(@Valid @RequestParam("searchName") String searchName,
-			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.search(searchName, page, size);
-
-	}
-	
-	@GetMapping(value = "/nome")
-	public ResponseEntity<Cliente> buscar(@RequestParam("searchName") @PathVariable String nomeCompleto) {
-		Cliente obj = service.findByName(nomeCompleto);
-	    return ResponseEntity.ok().body(obj);
-	}
-
-	@ApiOperation(value = "Inserir um novo cliente")
-	@PostMapping
-	public ResponseEntity<Cliente> insert(@Valid @RequestBody ClienteDTO objDto) {
-		Cliente obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+	@ApiOperation(value = "Remover cliente")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "Alterar nome de cliente por id")
@@ -92,14 +102,5 @@ public class ClienteResource {
 
 		return ResponseEntity.noContent().build();
 	}
-
-	@ApiOperation(value = "Remover cliente")
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-
 
 }

@@ -32,45 +32,6 @@ public class CidadeResource {
 	@Autowired
 	private CidadeService service;
 
-	@ApiOperation(value = "Listar todas Cidades")
-	@GetMapping
-	public ResponseEntity<List<CidadeDTO>> findAll() {
-
-		List<Cidade> list = service.findAll();
-		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-
-	@ApiOperation(value = "Listar todas as Cidades com Paginação")
-	@GetMapping("/page")
-	public Page<Cidade> getAll() {
-		return service.findAllPage();
-	}
-
-	@ApiOperation(value = "Buscar cidade por id")
-	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
-
-		Optional<Cidade> obj = Optional.ofNullable(service.find(id));
-		return ResponseEntity.ok().body(obj);
-	}
-
-	@ApiOperation(value = "Buscar cidade por nome com Paginação")
-	@GetMapping("/search")
-	public Page<Cidade> search(@RequestParam("searchName") String searchName,
-			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.search(searchName, page, size);
-	}
-
-	@ApiOperation(value = "Buscar cidade por estado com Paginação")
-	@GetMapping("/pesquisa")
-	public Page<Cidade> pesquisa(@RequestParam("searchName") String searchName,
-			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-		return service.pesquisa(searchName, page, size);
-	}
-
 	@ApiOperation(value = "Inserir nova cidade")
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody CidadeDTO objDto) {
@@ -91,6 +52,14 @@ public class CidadeResource {
 		return ResponseEntity.ok().body(cidadesDTO);
 	}
 
+	@ApiOperation(value = "Buscar cidade por nome com Paginação")
+	@GetMapping("/search")
+	public Page<Cidade> search(@RequestParam("searchName") String searchName,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.search(searchName, page, size);
+	}
+
 	@ApiOperation(value = "Buscar cidade por estado")
 	@GetMapping(value = "/estado")
 	public ResponseEntity<List<CidadeDTO>> buscarEstado(@RequestParam("searchName") @PathVariable String estado) {
@@ -98,6 +67,37 @@ public class CidadeResource {
 		List<CidadeDTO> cidadesDTO = service.findByEstado(estado);
 
 		return ResponseEntity.ok().body(cidadesDTO);
+	}
+
+	@ApiOperation(value = "Buscar cidade por estado com Paginação")
+	@GetMapping("/pesquisa")
+	public Page<Cidade> pesquisa(@RequestParam("searchName") String searchName,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+		return service.pesquisa(searchName, page, size);
+	}
+
+	@ApiOperation(value = "Buscar cidade por id")
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<Cidade>> find(@PathVariable Integer id) {
+
+		Optional<Cidade> obj = Optional.ofNullable(service.find(id));
+		return ResponseEntity.ok().body(obj);
+	}
+
+	@ApiOperation(value = "Listar todas Cidades")
+	@GetMapping
+	public ResponseEntity<List<CidadeDTO>> findAll() {
+
+		List<Cidade> list = service.findAll();
+		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+
+	@ApiOperation(value = "Listar todas as Cidades com Paginação")
+	@GetMapping("/page")
+	public Page<Cidade> getAll() {
+		return service.findAllPage();
 	}
 
 }
