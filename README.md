@@ -17,14 +17,14 @@
 | ------ | --------------------------------| -------------------------------------------------------------------------- |
 | POST   | `/cidades`                      | Cadastrar uma nova cidade                                                  |
 | GET    | `/cidades `                     | Retornar todas as cidades cadastradas                                      |
-| GET    | `/cidades/nome?searchName´      | Busca cidade pelo nome (CaseSensive)                                       |
-| GET    | `/cidades/estado?searchName´    | Busca cidade pelo nome do estado (CaseSensive)                             |
+| GET    | `/cidades/nome?searchName`      | Busca cidade pelo nome (Case Sensitive)                                    |
+| GET    | `/cidades/estado?searchName`    | Busca cidade pelo nome do estado (CaseSensive)                             |
 |        | Recursos Extras                 |                                                                            |
 | GET    | `/cidades/search?searchName=`   | Busca nome da cidade e retorna com paginação                               |
 | GET    | `/cidades/pesquisa?searchName=` | Busca nome da cidade por Estado e retorna com paginação.                   |
 | GET    | `/cidades/id`                   | Retornar as cidades cadastradas por ID                                     |
 | GET    | `/cidades/                     `| Retornar todas as cidades cadastradas                                      |
-| GET    | `/cidades/page´                 | Retorna todas as cidades cadastradas com Paginação                         |
+| GET    | `/cidades/page`                 | Retorna todas as cidades cadastradas com Paginação                         |
 
 </br>
 
