@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compassouol.domain.Cidade;
+import com.compassouol.domain.Cliente;
 import com.compassouol.dto.CidadeDTO;
 import com.compassouol.services.CidadeService;
 
@@ -80,6 +81,18 @@ public class CidadeResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 
+	}
+
+	@GetMapping(value = "/nome")
+	public ResponseEntity<Cidade> buscar(@RequestParam("searchName") @PathVariable String nome) {
+		Cidade obj = service.findByName(nome);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping(value = "/estado")
+	public ResponseEntity<Cidade> buscarEstado(@RequestParam("searchName") @PathVariable String estado) {
+		Cidade obj = service.findByEstado(estado);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }

@@ -79,5 +79,19 @@ public class CidadeService {
 		return new Cidade(objDTO.getId(), objDTO.getNome(), objDTO.getEstado());
 	}
 	
+	public Cidade findByName(String nome) {
+
+		Optional<Cidade> obj = repo.findByNome(nome);
+		return obj
+				.orElseThrow(() -> new ObjectNotFoundException("A cidade não foi encontrada na base de dados: " + nome,
+						Cidade.class.getName()));
+	}
 	
+	public Cidade findByEstado(String estado) {
+
+		Optional<Cidade> obj = repo.findByEstado(estado);
+		return obj
+				.orElseThrow(() -> new ObjectNotFoundException("O estado não foi encontrado na base de dados: " + estado,
+						Cidade.class.getName()));
+	}
 }
