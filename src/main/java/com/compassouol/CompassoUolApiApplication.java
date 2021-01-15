@@ -53,5 +53,9 @@ public class CompassoUolApiApplication implements CommandLineRunner {
 		
 		Cidade cid4 = new Cidade(null, "Salvador", "Bahia");
 		cidadeRepository.save(cid4);
+		
+		Cidade cid5 = new Cidade(null, "Recife", "Pernambuco");
+		cidadeRepository.save(cid5);
+	
 	}
 }

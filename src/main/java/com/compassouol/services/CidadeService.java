@@ -1,5 +1,6 @@
 package com.compassouol.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,10 +63,10 @@ public class CidadeService {
 		}
 	}
 
-	public Page<Cidade> pesquisa(String pesquisarEstado, int page, int size) {
+	public Page<Cidade> pesquisa(String searchName, int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "estado");
 
-		return repo.pesquisa(pesquisarEstado.toLowerCase(), pageRequest);
+		return repo.pesquisa(searchName.toLowerCase(), pageRequest);
 	}
 
 	public Page<Cidade> findAlle() {
@@ -81,17 +82,27 @@ public class CidadeService {
 	
 	public Cidade findByName(String nome) {
 
+		
 		Optional<Cidade> obj = repo.findByNome(nome);
 		return obj
 				.orElseThrow(() -> new ObjectNotFoundException("A cidade não foi encontrada na base de dados: " + nome,
 						Cidade.class.getName()));
 	}
 	
-	public Cidade findByEstado(String estado) {
+	public List<CidadeDTO> findByEstado(String estado) {
 
-		Optional<Cidade> obj = repo.findByEstado(estado);
-		return obj
-				.orElseThrow(() -> new ObjectNotFoundException("O estado não foi encontrado na base de dados: " + estado,
-						Cidade.class.getName()));
-	}
+        List<Cidade> cidades = repo.findByEstado(estado);
+        List<CidadeDTO> cidadesDTO = new ArrayList<>();
+		
+		for(Cidade cidade:cidades) {
+           
+			CidadeDTO cidadeDTO = new CidadeDTO(cidade);
+			cidadesDTO.add(cidadeDTO);
+
+		}
+		
+    	return cidadesDTO;
+
+
+}
 }
