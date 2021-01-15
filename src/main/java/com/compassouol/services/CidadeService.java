@@ -56,7 +56,7 @@ public class CidadeService {
 
 	public List<CidadeDTO> findByName(String nome) {
 
-		List<Cidade> cidades = repo.findByEstado(nome);
+		List<Cidade> cidades = repo.findByNome(nome);
 		List<CidadeDTO> cidadesDTO = new ArrayList<>();
 
 		for (Cidade cidade : cidades) {
