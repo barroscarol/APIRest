@@ -85,5 +85,11 @@ public class ClienteService {
 			throw new DataIntegrityException("Existem dados ainda vinculados ao cliente");
 		}
 	}
+	
+	public Cliente findByName(String nomeCompleto) {
+		
+	    Optional<Cliente> obj = repo.findByNomeCompleto(nomeCompleto); 
+	    return obj.orElseThrow(() -> new ObjectNotFoundException("O cliente não foi encontrado na base de dados: " + nomeCompleto, Cliente.class.getName()));
+	}
 
 }

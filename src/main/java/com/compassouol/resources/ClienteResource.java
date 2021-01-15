@@ -66,6 +66,12 @@ public class ClienteResource {
 		return service.search(searchName, page, size);
 
 	}
+	
+	@GetMapping(value = "/nome")
+	public ResponseEntity<Cliente> buscar(@RequestParam("searchName") @PathVariable String nomeCompleto) {
+		Cliente obj = service.findByName(nomeCompleto);
+	    return ResponseEntity.ok().body(obj);
+	}
 
 	@ApiOperation(value = "Inserir um novo cliente")
 	@PostMapping
@@ -93,5 +99,7 @@ public class ClienteResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+
 
 }

@@ -78,4 +78,6 @@ public class CidadeService {
 	public Cidade fromDTO(CidadeDTO objDTO) {
 		return new Cidade(objDTO.getId(), objDTO.getNome(), objDTO.getEstado());
 	}
+	
+	
 }
