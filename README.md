@@ -18,7 +18,7 @@
 | POST   | `/cidades`                      | Cadastrar uma nova cidade                                                  |
 | GET    | `/cidades `                     | Retornar todas as cidades cadastradas                                      |
 | GET    | `/cidades/nome?searchName`      | Busca cidade pelo nome (Case Sensitive)                                    |
-| GET    | `/cidades/estado?searchName`    | Busca cidade pelo nome do estado (CaseSensive)                             |
+| GET    | `/cidades/estado?searchName`    | Busca cidade pelo nome do estado (Case Sensitive)                          |
 |        | Recursos Extras                 |                                                                            |
 | GET    | `/cidades/search?searchName=`   | Busca nome da cidade e retorna com paginação                               |
 | GET    | `/cidades/pesquisa?searchName=` | Busca nome da cidade por Estado e retorna com paginação.                   |
@@ -61,14 +61,14 @@
 | Verbo  | Recurso                         | Descrição                                                                  |
 | ------ | --------------------------------| -------------------------------------------------------------------------- |
 | POST   | `/clientes`                     | Cadastrar um novo cliente                                                  |
-| GET    | `/clientes/nome?searchName `    | Busca cliente pelo seu nome completo (CaseSensive)                         |
+| GET    | `/clientes/nome?searchName `    | Busca cliente pelo seu nome completo (Case Sensitive)                      |
 | GET    | `/clientes/{id} `               | Busca cliente pelo seu ID                                                  |
 | DELETE | `/clientes/{id} `               | Remove cliente pelo seu ID                                                 |
 | UPDATE | `/clientes/{id} `               | Altera nome do cliente pelo seu ID                                         |
 | Recursos Extras                          |                                                                            |
 | GET    | `/clientes/search?searchName=`  | Busca cliente pelo nome e retorna em uma lista paginada                    |
 | GET    | `/clientes/`                    | Retornar todos os clientes Cadastrados                                     |
-| GET    | `/clientes/page´                | Retorna todos os clientes Cadastrados em uma lista paginada                |
+| GET    | `/clientes/page`                | Retorna todos os clientes Cadastrados em uma lista paginada                |
 
 </br>
 
@@ -114,13 +114,21 @@
 ## How
 Acessos:
 
-* `A API está sendo escutada no servidor local na porta "8080", dessa forma, para todas as rotas serem acessadas localmente, use "http://localhost:8080/" antes do caminho da rota.`
+* `A API está  executada no servidor local na porta "8080", dessa forma, para todas as rotas serem acessadas localmente, use "http://localhost:8080/" antes do caminho da rota.`
 
 * `A API foi documentada a partir do Swagger, personalizada com suas saídas e funcionalidades, para acesso use: http://localhost:8080/swagger-ui.html#/.`
 
 * `Foi utilizado o banco de dados relacional h2 para acesso de tabelas http://localhost:8080/h2-console/`
 
-* `Existe uma carga de dados na camada de teste, assim o h2 se inicializará com alguns dados de Clientes e Cidades (com finalidade de facilitar os testes)`
+* `Existe uma carga de dados na camada de teste, assim o h2 se inicializará com alguns dados de Clientes e Cidades (com finalidade de facilitar os testes)
+
+* `em aplicattion.properties está configurado o padrão do banco de dados h2:` 
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 
 
 ## Estrutura da API
